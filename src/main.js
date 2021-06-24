@@ -1,10 +1,15 @@
 import Vue from "vue";
-import App from "./App.vue";
 import store from "./store";
+import vueCustomElement from "vue-custom-element";
+
+import widgets from "./configComponent.js";
 
 Vue.config.productionTip = false;
+Vue.use(vueCustomElement);
 
-new Vue({
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+Vue.config.ignoredElements = widgets.map((widget) => {
+  widget[1].store = store;
+  Vue.customElement(widget[0], widget[1]);
+
+  return widget[0];
+})
